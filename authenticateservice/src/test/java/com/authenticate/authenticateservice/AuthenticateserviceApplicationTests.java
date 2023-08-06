@@ -1,10 +1,10 @@
-package com.customer.service.customerservice;
+package com.authenticate.authenticateservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CustomerserviceApplicationTests {
+class AuthenticateserviceApplicationTests {
 
 	@Test
 	void contextLoads() {
