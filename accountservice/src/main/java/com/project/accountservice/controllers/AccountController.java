@@ -31,12 +31,19 @@ public class AccountController {
 	
 	
 	@GetMapping("/{custId}/balance")
-	public String getBalanceByCustId(@PathVariable long custId){
+	public ResponseEntity<String> getBalanceByCustId(@PathVariable long custId){
 		
 		Account acc = service.getAccByCustomer(custId);
-		authenticate.getCustomer((int)custId);
+		
+		Customer customer = authenticate.getCustomer((int)custId);
+		String token = authenticate.login(customer.getName(), customer.getPassword());
+		if (token != null){
 		long balance = acc.getAccountBalance();
 		
-		return "Balance of your account: "+balance;
+		return ResponseEntity.status(HttpStatus.OK).body("Your account balance is: "+ balance);
+		}else{
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Bad Credential.");
+		}
+		
 	}
 }

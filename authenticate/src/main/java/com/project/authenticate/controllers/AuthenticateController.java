@@ -30,6 +30,7 @@ public class AuthenticateController {
 	@PostMapping("/login")
 	public String login(@RequestBody LoginRequestDTO loginRequestDTO) {
 		String token = null;
+		System.out.println("Login request "+ loginRequestDTO.getUsername());
 		LoginResponseDTO loginResponseDTO = null;
 		Map<String, Object> claims = new HashMap<>();
 		Set<String> roles = new HashSet<>();

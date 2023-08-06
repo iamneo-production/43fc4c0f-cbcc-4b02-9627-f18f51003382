@@ -21,7 +21,14 @@ public class CustomerController {
 	
 	@Autowired
 	private CustomerService customerService;
-	
+
+
+	@GetMapping("/{customerName}")
+	public ResponseEntity<Customer> customerByName(@PathVariable String customerName){
+		return ResponseEntity.status(HttpStatus.OK).body(customerService.findByName(customer));
+	}
+
+
 	@PostMapping
 	public ResponseEntity<Customer> addCustomer(@RequestBody Customer customer){
 		return ResponseEntity.status(HttpStatus.CREATED).body(customerService.saveUser(customer));

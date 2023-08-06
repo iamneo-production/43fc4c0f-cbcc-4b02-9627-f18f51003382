@@ -1,5 +1,5 @@
 package com.project.authenticate.service;
-import com.project.authenticate.repository.*;
+import com.project.authenticate.externalService.*;
 import com.project.authenticate.entity.Customer;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,14 +12,16 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class CustomerService implements UserDetailsService{
 
-    private CustomerRepository customerRepository;
+   
 
     private BCryptPasswordEncoder passwordEncoder;
 
+    private ExternalCustomerService externalService;
+
 
     public UserDetails loadUserByUsername(String username){
-        Customer customer  = customerRepository.findByUsername(username);
-        if (user == null){
+        Customer customer  = externalService.customerByName(username);
+        if (customer == null){
             throw new UsernameNotFoundException("User not found.");
         }
         UserDetails userDetails = new org.springframework.security.core.userdetails.User(customer.getName(),
