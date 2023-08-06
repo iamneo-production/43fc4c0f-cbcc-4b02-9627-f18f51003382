@@ -31,6 +31,7 @@ public class AccountController {
 	
 	
 	@GetMapping("/{custId}/balance")
+	@CircuitBreaker(name="accountService",fallbackMethod = "alternate")
 	public ResponseEntity<String> getBalanceByCustId(@PathVariable long custId){
 		
 		Account acc = service.getAccByCustomer(custId);
@@ -39,11 +40,29 @@ public class AccountController {
 		String token = authenticate.login(customer.getName(), customer.getPassword());
 		if (token != null){
 		long balance = acc.getAccountBalance();
-		
-		return ResponseEntity.status(HttpStatus.OK).body("Your account balance is: "+ balance);
+		authenticate.getCustomer((int)custId);
+			
+			AuditLogs audit = new AuditLogs();
+			audit.setCustomerId(custId);
+			audit.setStatus(true);
+			
+			auditIntf.addAuditLog(audit);
+			//return notifications.addNotice(true) ;
+			return ResponseEntity.status(HttpStatus.OK).body(notifications.addNotice(true) + balance);
 		}else{
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Bad Credential.");
+			AuditLogs audit = new AuditLogs();
+			audit.setCustomerId(custId);
+			audit.setStatus(false);
+			
+			auditIntf.addAuditLog(audit);
+			//return notifications.addNotice(false);
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(notifications.addNotice(false));
 		}
 		
+		
+	}
+
+	public String alternate(@PathVariable long custId) {
+		return "The service down!";
 	}
 }
