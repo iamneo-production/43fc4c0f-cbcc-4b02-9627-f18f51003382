@@ -1,13 +1,13 @@
-package com.customer.service.customerservice;
+package com.project.accountservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class CustomerserviceApplication {
+public class AccountserviceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(CustomerserviceApplication.class, args);
+		SpringApplication.run(AccountserviceApplication.class, args);
 	}
 
 }
